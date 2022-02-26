@@ -1,0 +1,88 @@
+@startuml Biblio
+
+package "Biblio" {
+
+class Ressource<<abstrait>>{
+ code_unique: int {key}
+ titre: varchar
+ date_apparition: date
+ editeur: varchar
+ genre: varchar
+ code_classification: int
+}
+
+
+enum Etat{
+  neuf
+  bon
+  abime
+  perdu
+}
+
+class Exemplaire{
+  id: integer {key}
+  etat:Etat
+  disponible: {0,1}
+}
+
+
+class Contributeur{
+  id: int {key}
+  nom: varchar
+  pernom: varchar
+  ddn: date
+  nationalite: varchar
+}
+
+class Ressource_Contributeur{
+  role: Role
+}
+
+enum Role{
+  auteur
+  realisateur
+  acteur
+  compositeur
+  interprete
+}
+
+Contributeur "1..*" -right-o "1..*" Ressource : contribue
+(Contributeur,Ressource) .. Ressource_Contributeur
+
+class Livre{
+  isbn: int {unique}
+  resume: text
+  langue: varchar
+}
+class Film{
+  langue: varchar
+  duree: date
+  synopsis: varchar
+}
+class Musique{
+  duree: date
+}
+
+Ressource <|-- Livre
+Ressource <|-- Film
+Ressource <|-- Musique
+
+
+Exemplaire "0..*" -- "1..1" Ressource : est-un
+
+}
+
+class Pret{
+
+}
+class Adherent{
+
+}
+class Personnel{
+
+}
+class Compte{
+
+}
+
+@enduml
